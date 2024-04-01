@@ -215,9 +215,9 @@ const fetchGeoData = async (cityName?: string, lat?: number, lon?: number) => {
   setIsLoading(true); // Start loading
   setHasError(false); // Reset error state
   try {
-    let url = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.NEXT_PUBLIC_API_KEY}`;
+    let url = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.NEXT_PUBLIC_API_KEY}`;
     if (!cityName) { // If cityName is not provided, use latitude and longitude
-      url = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${process.env.NEXT_PUBLIC_API_KEY}`;
+      url = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${process.env.NEXT_PUBLIC_API_KEY}`;
     }
 
     const response = await fetch(url);

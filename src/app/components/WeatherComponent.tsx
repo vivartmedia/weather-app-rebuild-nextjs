@@ -5,17 +5,17 @@ import { getDayName, formatTime12Hour } from '../utils/Dataservices';
 
 const WeatherComponent: React.FC = () => {
 
-  const [currentCity, setCurrentCity] = useState<string>(() => localStorage.getItem('currentCity') || '');
-  const [isFahrenheit, setIsFahrenheit] = useState<boolean>(() => JSON.parse(localStorage.getItem('isFahrenheit') || 'true'));
+
+  
+
+  const [currentCity, setCurrentCity] = useState<string>(() => '');
+  const [isFahrenheit, setIsFahrenheit] = useState<boolean>(() => true);
 
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [geoData, setGeoData] = useState<GeoData | null>(null);
 
   const [forecastData, setForecastData] = useState<DailyForecast[] | null>(null);
-  const [savedCities, setSavedCities] = useState<string[]>(() => {
-    const saved = localStorage.getItem('savedCities');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [savedCities, setSavedCities] = useState<string[]>(() => []);
   const [searchQuery, setSearchQuery] = useState('');
 
 
@@ -34,7 +34,18 @@ const [hasError, setHasError] = useState(false);
   };
 
   useEffect(() => {
+    // This code runs after the component mounts, ensuring access to localStorage
+    const storedCity = localStorage.getItem('currentCity') || '';
+    setCurrentCity(storedCity);
+    
+    const storedPreference = localStorage.getItem('isFahrenheit');
+    setIsFahrenheit(storedPreference ? JSON.parse(storedPreference) : true);
+  }, []);
+
+  useEffect(() => {
+
     localStorage.setItem('savedCities', JSON.stringify(savedCities));
+    console.log("this is line 48 " + localStorage.getItem('savedCities'))
   }, [savedCities]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -258,6 +269,7 @@ const fetchGeoData = async (cityName?: string, lat?: number, lon?: number) => {
   //  the save button functionality
   const handleToggleCitySave = (city: string) => {
     const isCitySaved = savedCities.includes(city);
+    localStorage.setItem('savedCities', city)
     if (isCitySaved) {
       setSavedCities(savedCities.filter((savedCity) => savedCity !== city));
     } else {

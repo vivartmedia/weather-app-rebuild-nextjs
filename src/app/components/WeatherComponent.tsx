@@ -174,7 +174,7 @@ const [hasError, setHasError] = useState(false);
 
       const dailyForecasts = data.list.reduce((acc: DailyForecast[], item) => {
         const localDateString = convertToLocalDateString(item.dt, data.city.timezone);
-
+ 
         // Only include forecasts starting from 'tomorrow'
         if (localDateString >= localTodayString) {
           const existingForecast = acc.find(forecast => forecast.day === localDateString);
